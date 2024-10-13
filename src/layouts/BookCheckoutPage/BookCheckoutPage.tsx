@@ -35,7 +35,8 @@ export const BookCheckoutPage = () => {
     const [isCheckedOut, setIsCheckedOut] = useState(false);
     const [isLoadingBookCheckedOut, setIsLoadingBookCheckedOut] = useState(true);
 
-
+    // Payment state
+    const [displayError, setDisplayError] = useState(false);
 
 
     //creating a variable that is going to be used to grab the path parameter out of the URL.
@@ -315,9 +316,13 @@ export const BookCheckoutPage = () => {
         const checkoutResponse = await fetch(url, requestOptions);
 
         if(!checkoutResponse.ok){
+
+            // if we get an exception from the backend server, we are setting our displayError to true and then throwing a new error
+            setDisplayError(true);
             throw new Error("Something went wrong!");
         }
 
+        setDisplayError(false);  // if there is no error from the backend server, we want to displayError to false
         setIsCheckedOut(true);
 
     }
@@ -361,6 +366,13 @@ export const BookCheckoutPage = () => {
 
             {/* Below code is for the Desktop view */}
             <div className="container d-none d-lg-block">
+
+                {/* to display error if the lates fees payment is not done by the user for late books */}
+                { 
+                    displayError && <div className='alert alert-danger mt-3' role='alert'>
+                        Please pay outstanding fees and/or return late book(s).
+                    </div>
+                }
 
                 <div className="row mt-5">
 
@@ -406,6 +418,13 @@ export const BookCheckoutPage = () => {
 
             {/* Below code is for the Mobile view */}
             <div className="container d-lg-none mt-5" >
+
+                {/* to display error if the lates fees payment is not done by the user for late books */}
+                { 
+                    displayError && <div className='alert alert-danger mt-3' role='alert'>
+                        Please pay outstanding fees and/or return late book(s).
+                    </div>
+                }
 
                 <div className="d-flex justify-content-center align-items-center">
 

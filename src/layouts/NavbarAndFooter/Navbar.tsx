@@ -14,6 +14,7 @@ export const Navbar = () => {
     const handleLogout = async () => oktaAuth.signOut();
 
     // here we're printing the authState everytime in the console so that we can check the authState authentication current status
+    // below code is written to print the authentication token from the Okta into our console log.
     console.log(authState);
 
     return (
@@ -47,6 +48,12 @@ export const Navbar = () => {
                         {authState?.isAuthenticated &&
                             <li className='nav-item'>
                                 <NavLink className='nav-link' to='/shelf'>Shelf</NavLink>
+                            </li>
+                        }
+
+                        {authState?.isAuthenticated &&
+                            <li className='nav-item'>
+                                <NavLink className='nav-link' to='/fees'>Pay Fees</NavLink>
                             </li>
                         }
 

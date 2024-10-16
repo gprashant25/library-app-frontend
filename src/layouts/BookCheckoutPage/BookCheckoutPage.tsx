@@ -315,11 +315,12 @@ export const BookCheckoutPage = () => {
 
         const checkoutResponse = await fetch(url, requestOptions);
 
+        // Please note: if we get an exception from the backend server, we are setting our displayError to true and then throwing a new error
         if(!checkoutResponse.ok){
 
-            // if we get an exception from the backend server, we are setting our displayError to true and then throwing a new error
             setDisplayError(true);
-            throw new Error("Something went wrong!");
+            return;          // VERY IMPORTANT STEP: If we're not getting 200 ok response from the springboot backend server then we have to return the page showing  the displayError banner at the top 
+            //throw new Error("Something went wrong!");   // here no need to throw error as we've written the return statement above.So instead of using the throw new Error over here just use the return keyword which means if the response is not 200 OK then setDisplayError to true and then return to the caller.
         }
 
         setDisplayError(false);  // if there is no error from the backend server, we want to displayError to false
@@ -368,10 +369,9 @@ export const BookCheckoutPage = () => {
             <div className="container d-none d-lg-block">
 
                 {/* to display error if the lates fees payment is not done by the user for late books */}
-                { 
-                    displayError && <div className='alert alert-danger mt-3' role='alert'>
-                        Please pay outstanding fees and/or return late book(s).
-                    </div>
+                {displayError && <div className='alert alert-danger mt-3' role='alert'>
+                    Please pay outstanding fees and/or return late book(s).
+                </div>
                 }
 
                 <div className="row mt-5">
@@ -420,10 +420,9 @@ export const BookCheckoutPage = () => {
             <div className="container d-lg-none mt-5" >
 
                 {/* to display error if the lates fees payment is not done by the user for late books */}
-                { 
-                    displayError && <div className='alert alert-danger mt-3' role='alert'>
-                        Please pay outstanding fees and/or return late book(s).
-                    </div>
+                {displayError && <div className='alert alert-danger mt-3' role='alert'>
+                    Please pay outstanding fees and/or return late book(s).
+                </div>
                 }
 
                 <div className="d-flex justify-content-center align-items-center">
